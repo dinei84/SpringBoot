@@ -2,6 +2,7 @@ package com.curso.mateus.controller;
 
 import com.curso.mateus.Model.Produto;
 import com.curso.mateus.Service.ProdutoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,10 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Produto> buscarProduto(@PathVariable Long id){
-        return service.buscarProduto(id);
+    public ResponseEntity<Produto> buscarProduto(@PathVariable Long id){
+        return service.buscarProduto(id)
+                .map(produto -> ResponseEntity.ok(produto))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -33,8 +36,10 @@ public class ProdutoController {
     }
 
     @PutMapping("/{id}")
-    public Produto atualizarProduto(@PathVariable Long id){
-        return service.atualizarProduto(id);
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long id, @RequestBody Produto produto){
+        return service.atualizarProduto(id, produto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

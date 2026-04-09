@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.curso.mateus.Model.Produto;
 import com.curso.mateus.Repository.ProdutoRepository;
 
+import javax.swing.text.html.Option;
+
 @Service
 public class ProdutoService {
 
@@ -29,12 +31,14 @@ public class ProdutoService {
         return repository.save(produto);
     }
 
-    public Produto atualizarProduto(long id){
-        Optional<Produto> produto = buscarProduto(id);
-        if(produto.isPresent()){
-            return repository.save(produto.get());
-        }
-        return null;
+    public Optional<Produto> atualizarProduto(Long id, Produto produto){
+        return repository.findById(id)
+                .map(produtoAtual -> {
+                    produtoAtual.setNome(produto.getNome());
+                    produtoAtual.setDescricao(produto.getDescricao());
+                    produtoAtual.setPreco(produto.getPreco());
+                    return repository.save(produtoAtual);
+                });
     }
 
     public void excluirProduto(Long id){
