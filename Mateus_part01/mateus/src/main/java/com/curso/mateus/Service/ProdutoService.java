@@ -3,12 +3,11 @@ package com.curso.mateus.Service;
 import java.util.List;
 import java.util.Optional;
 
+import com.curso.mateus.exceptions.RecursoNaoEncontradoException;
 import org.springframework.stereotype.Service;
 
 import com.curso.mateus.Model.Produto;
 import com.curso.mateus.Repository.ProdutoRepository;
-
-import javax.swing.text.html.Option;
 
 @Service
 public class ProdutoService {
@@ -23,8 +22,9 @@ public class ProdutoService {
         return repository.findAll();
     }
 
-    public Optional<Produto> buscarProduto(Long id){
-        return repository.findById(id);
+    public Produto buscarProduto(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Produto com id " + id + " nao encontrado"));
     }
 
     public Produto salvarProduto(Produto produto){
@@ -42,10 +42,10 @@ public class ProdutoService {
     }
 
     public void excluirProduto(Long id){
-        Optional<Produto> produto = buscarProduto(id);
-        if(produto.isPresent()){
-            repository.delete(produto.get());
+        if(repository.existsById(id)){
+            throw new RecursoNaoEncontradoException("Produto com id " + id + ", não encontrado");
         }
+        repository.deleteById(id);
     }
 
 }
