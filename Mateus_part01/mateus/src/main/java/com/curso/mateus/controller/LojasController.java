@@ -1,7 +1,6 @@
 package com.curso.mateus.controller;
 
 import com.curso.mateus.DTO.LojasDTO;
-import com.curso.mateus.Model.LojasModel;
 import com.curso.mateus.Service.LojasService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
