@@ -19,11 +19,6 @@ public class ClienteController {
         this.service = service;
     }
 
-    @PostMapping
-    public ClienteModel salvarCliente(@RequestBody ClienteModel cliente){
-        return service.salvarCliente(cliente);
-    }
-
     @GetMapping
     public List<ClienteModel> listarClientes(){
         return service.listarClientes();
@@ -33,7 +28,11 @@ public class ClienteController {
     public ResponseEntity<?> buscarCliente(@PathVariable Long id){
          ClienteModel cliente = service.buscarCliente(id);
          return ResponseEntity.ok(cliente);
+    }
 
+    @PostMapping
+    public ClienteModel salvarCliente(@RequestBody ClienteModel cliente){
+        return service.salvarCliente(cliente);
     }
 
     @PutMapping("/{id}")
